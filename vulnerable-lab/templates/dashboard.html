@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelLab — Dashboard</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+        }
+
+        /* ── Nav ─────────────────────────────────────────────────── */
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .nav-links { display: flex; gap: 0.5rem; align-items: center; }
+
+        .nav-link {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .nav-link:hover { color: #c9d1d9; background: #21262d; }
+
+        .nav-link.danger { color: #f85149; }
+        .nav-link.danger:hover { background: #1f1315; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.45rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.25rem;
+        }
+
+        .badge-admin { background: #1f3a5f; color: #79c0ff; }
+        .badge-user  { background: #1b2d1b; color: #56d364; }
+
+        /* ── Main ────────────────────────────────────────────────── */
+        main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 { font-size: 1.4rem; color: #f0f6fc; }
+        .page-header p  { color: #8b949e; font-size: 0.875rem; margin-top: 0.25rem; }
+
+        /* ── Cards ───────────────────────────────────────────────── */
+        .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .card-title { font-size: 0.78rem; color: #8b949e; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .card-value { font-size: 1.75rem; font-weight: 700; color: #f0f6fc; }
+
+        /* ── Table ───────────────────────────────────────────────── */
+        .table-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-header h2 { font-size: 0.95rem; color: #f0f6fc; }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            background: #21262d;
+            padding: 0.6rem 1rem;
+            text-align: left;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8b949e;
+            font-weight: 600;
+            border-bottom: 1px solid #30363d;
+        }
+
+        td {
+            padding: 0.65rem 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #21262d;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #1c2128; }
+
+        .status-success { color: #56d364; font-weight: 600; }
+        .status-failure { color: #f85149; font-weight: 600; }
+
+        code { font-family: 'Consolas', monospace; font-size: 0.85em; color: #a5d6ff; }
+
+        /* ── Quick Actions ───────────────────────────────────────── */
+        .actions { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .action-btn-primary {
+            background: #21262d;
+            border-color: #30363d;
+            color: #c9d1d9;
+        }
+
+        .action-btn-primary:hover { border-color: #8b949e; }
+
+        .action-btn-danger {
+            background: #1f1315;
+            border-color: #6e1e1e;
+            color: #f85149;
+        }
+
+        .action-btn-danger:hover { border-color: #f85149; }
+
+        /* ── Vuln tag ────────────────────────────────────────────── */
+        .vuln-bar {
+            background: #2d1b00;
+            border: 1px solid #f0883e;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            color: #f0883e;
+            margin-bottom: 1.5rem;
+            font-family: 'Consolas', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-brand">
+        🛡️ CorpNet Portal
+        <span class="badge {{ 'badge-admin' if role == 'admin' else 'badge-user' }}">
+            {{ role }}
+        </span>
+    </div>
+    <div class="nav-links">
+        <span style="font-size:0.875rem; color:#8b949e;">{{ username }}</span>
+        <a href="/admin" class="nav-link" id="nav-admin">Admin Panel</a>
+        <a href="/debug" class="nav-link" id="nav-debug">Debug</a>
+        <a href="/logout" class="nav-link danger" id="nav-logout">Sign Out</a>
+    </div>
+</nav>
+
+<main>
+
+    <div class="vuln-bar">
+        ⚠️ INTENTIONALLY VULNERABLE LAB — [VULN-003] Admin panel accessible by any logged-in user &nbsp;|&nbsp;
+        [VULN-002] Debug endpoint exposes internals
+    </div>
+
+    <div class="page-header">
+        <h1>Welcome back, {{ username }}</h1>
+        <p>Simulated corporate portal — SentinelLab local laboratory environment</p>
+    </div>
+
+    <!-- Quick stats from auth log -->
+    <div class="cards">
+        <div class="card">
+            <div class="card-title">Total Login Attempts</div>
+            <div class="card-value">{{ recent_logins | length }}</div>
+        </div>
+        <div class="card">
+            <div class="card-title">Failed Logins (shown)</div>
+            <div class="card-value" style="color:#f85149;">
+                {{ recent_logins | selectattr('success', 'equalto', 0) | list | length }}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title">Successful Logins (shown)</div>
+            <div class="card-value" style="color:#56d364;">
+                {{ recent_logins | selectattr('success', 'equalto', 1) | list | length }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="actions">
+        <a href="/admin" class="action-btn action-btn-primary" id="btn-admin-panel">🔑 Admin Panel</a>
+        <a href="/debug" class="action-btn action-btn-primary" id="btn-debug">🐛 Debug Info</a>
+        <a href="/api/users" class="action-btn action-btn-primary" id="btn-api-users">👥 API: Users</a>
+        <a href="/api/logs" class="action-btn action-btn-primary" id="btn-api-logs">📋 API: Logs</a>
+        <button class="action-btn action-btn-danger" id="btn-reset-lab"
+                onclick="resetLab()">🔄 Reset Lab</button>
+    </div>
+
+    <!-- Auth log table -->
+    <div class="table-card">
+        <div class="table-header">
+            <h2>Recent Authentication Events</h2>
+            <span style="font-size:0.78rem;color:#8b949e;">Last 20 events</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Source IP</th>
+                    <th>Username</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in recent_logins %}
+                <tr>
+                    <td><code>{{ log['timestamp'] }}</code></td>
+                    <td><code>{{ log['source_ip'] }}</code></td>
+                    <td>{{ log['username'] }}</td>
+                    <td>
+                        {% if log['success'] %}
+                        <span class="status-success">✓ SUCCESS</span>
+                        {% else %}
+                        <span class="status-failure">✗ FAILURE</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align:center;color:#8b949e;padding:1.5rem;">
+                        No authentication events yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<script>
+async function resetLab() {
+    if (!confirm('Reset the lab database to its initial state?')) return;
+    const res = await fetch('/reset', { method: 'POST' });
+    const data = await res.json();
+    alert(data.message);
+    location.reload();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelLab — Login</title>
+    <style>
+        /* ── Reset & Base ────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── Layout ──────────────────────────────────────────────── */
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            padding: 1rem;
+        }
+
+        /* ── Warning Banner ──────────────────────────────────────── */
+        .warning-banner {
+            background: #2d1b00;
+            border: 1px solid #f0883e;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.78rem;
+            color: #f0883e;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .warning-banner strong { display: block; margin-bottom: 0.25rem; }
+
+        /* ── Card ────────────────────────────────────────────────── */
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header .logo {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .card-header p {
+            font-size: 0.82rem;
+            color: #8b949e;
+            margin-top: 0.25rem;
+        }
+
+        /* ── Form ────────────────────────────────────────────────── */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #c9d1d9;
+            margin-bottom: 0.4rem;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.55rem 0.75rem;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #388bfd;
+            box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.15);
+        }
+
+        /* ── Error ───────────────────────────────────────────────── */
+        .error-box {
+            background: #1f1315;
+            border: 1px solid #f85149;
+            border-radius: 6px;
+            padding: 0.65rem 0.9rem;
+            font-size: 0.85rem;
+            color: #f85149;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Button ──────────────────────────────────────────────── */
+        .btn {
+            width: 100%;
+            padding: 0.6rem;
+            background: #238636;
+            border: 1px solid #2ea043;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn:hover { background: #2ea043; }
+
+        /* ── Credentials hint (lab convenience) ─────────────────── */
+        .lab-hint {
+            margin-top: 1.25rem;
+            padding: 0.75rem;
+            background: #0d2137;
+            border: 1px solid #1f6feb;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: #79c0ff;
+        }
+
+        .lab-hint strong { color: #58a6ff; display: block; margin-bottom: 0.4rem; }
+        .lab-hint code {
+            font-family: 'Consolas', monospace;
+            background: #0d1117;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            color: #a5d6ff;
+        }
+
+        /* ── Vulnerability label ─────────────────────────────────── */
+        .vuln-label {
+            font-size: 0.7rem;
+            color: #f0883e;
+            font-family: 'Consolas', monospace;
+            margin-top: 1.25rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+
+    <div class="warning-banner">
+        <strong>⚠️ INTENTIONALLY VULNERABLE APPLICATION</strong>
+        For local educational use only — SentinelLab Lab Environment
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="logo">🛡️</div>
+            <h1>CorpNet Portal</h1>
+            <p>Simulated corporate login — local lab environment</p>
+        </div>
+
+        {% if error %}
+        <div class="error-box" id="login-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/login" id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter username"
+                    autocomplete="off"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn" id="login-btn">Sign In</button>
+        </form>
+
+        <div class="lab-hint">
+            <strong>🧪 Lab Credentials</strong>
+            Admin: <code>admin</code> / <code>admin123</code> &nbsp;|&nbsp;
+            User: <code>alice</code> / <code>password</code>
+        </div>
+
+        <div class="vuln-label">
+            [VULN-001] No rate limiting &nbsp;|&nbsp;
+            [VULN-004] SQL injection surface
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

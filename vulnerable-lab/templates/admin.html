@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelLab — Admin Panel [VULNERABLE]</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+        }
+
+        .nav-brand { font-weight: 600; color: #f0f6fc; }
+        .nav-links { display: flex; gap: 0.5rem; }
+
+        .nav-link {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .nav-link:hover { color: #c9d1d9; background: #21262d; }
+
+        main { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        .vuln-warning {
+            background: #1f1315;
+            border: 2px solid #f85149;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Consolas', monospace;
+            font-size: 0.82rem;
+            color: #f85149;
+            line-height: 1.6;
+        }
+
+        .vuln-warning strong { font-size: 0.9rem; display: block; margin-bottom: 0.5rem; }
+
+        h1 { font-size: 1.4rem; color: #f0f6fc; margin-bottom: 0.25rem; }
+        .subtitle { color: #8b949e; font-size: 0.875rem; margin-bottom: 2rem; }
+
+        .section { margin-bottom: 2rem; }
+
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #8b949e;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #21262d;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            background: #21262d;
+            padding: 0.6rem 1rem;
+            text-align: left;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8b949e;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.65rem 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #21262d;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        code {
+            font-family: 'Consolas', monospace;
+            background: #0d1117;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            color: #a5d6ff;
+            font-size: 0.83em;
+        }
+
+        .role-admin { color: #f0883e; font-weight: 600; }
+        .role-user  { color: #56d364; }
+
+        .sensitive-value {
+            color: #f85149;
+            font-family: 'Consolas', monospace;
+            font-size: 0.83rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.12rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .tag-vuln { background: #2d1215; color: #f85149; border: 1px solid #6e1e1e; }
+
+        .access-note {
+            background: #0d2137;
+            border: 1px solid #1f6feb;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-size: 0.82rem;
+            color: #79c0ff;
+            margin-top: 1.5rem;
+            font-family: 'Consolas', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="nav-brand">🛡️ CorpNet — Admin Panel</span>
+    <div class="nav-links">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/logout" class="nav-link" style="color:#f85149;">Sign Out</a>
+    </div>
+</nav>
+
+<main>
+
+    <div class="vuln-warning">
+        <strong>⚠️ [VULN-003] BROKEN ACCESS CONTROL — INTENTIONALLY VULNERABLE</strong>
+        This admin panel performs ONLY a login check — not a role check.<br>
+        Any authenticated user (including role=user) can reach this page.<br>
+        <br>
+        Secure code would check: <code>session.get('role') == 'admin'</code><br>
+        This page is intentionally misconfigured for educational analysis.
+    </div>
+
+    <h1>Admin Panel</h1>
+    <p class="subtitle">
+        Authenticated as: <strong>{{ username }}</strong> &nbsp;|&nbsp;
+        Role: <strong class="{{ 'role-admin' if role == 'admin' else 'role-user' }}">
+            {{ role }}
+        </strong>
+        &nbsp;
+        <span class="tag tag-vuln">[VULN-003] Role not enforced</span>
+    </p>
+
+    <!-- User accounts section -->
+    <div class="section">
+        <div class="section-title">User Accounts</div>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user['id'] }}</td>
+                        <td><strong>{{ user['username'] }}</strong></td>
+                        <td class="{{ 'role-admin' if user['role'] == 'admin' else 'role-user' }}">
+                            {{ user['role'] }}
+                        </td>
+                        <td><code>{{ user['created_at'] }}</code></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Sensitive data section -->
+    <div class="section">
+        <div class="section-title">
+            Sensitive Configuration
+            <span class="tag tag-vuln" style="margin-left:0.5rem;">[VULN-003] Exposed to any user</span>
+        </div>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Label</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in sensitive %}
+                    <tr>
+                        <td>{{ item['label'] }}</td>
+                        <td class="sensitive-value">{{ item['value'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="access-note">
+        🔍 Detection Note: Access to /admin by a non-admin user should trigger a
+        MEDIUM severity alert in the SentinelLab detection engine.
+        Check the SentinelLab dashboard to see if an alert was generated.
+    </div>
+
+</main>
+
+</body>
+</html>
