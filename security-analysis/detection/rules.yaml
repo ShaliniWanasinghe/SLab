@@ -1,0 +1,49 @@
+# SentinelLab Detection Rules
+
+rules:
+  - id: RULE-001
+    name: Repeated Authentication Failures
+    description: Detects rapid authentication failures from a single IP, indicative of brute force.
+    type: threshold
+    condition:
+      event_type: auth_failure
+      success: 0
+    threshold: 5
+    window_seconds: 60
+    group_by: source_ip
+    severity: MEDIUM
+    escalate_to: HIGH
+    escalate_threshold: 15
+    analyst_action: >
+      1. Verify if the source IP is legitimate.
+      2. Check if any attempts succeeded.
+      3. Block source IP if unauthorized.
+
+  - id: RULE-002
+    name: Suspicious Path Probing
+    description: Detects access attempts to known sensitive administrative or debug paths.
+    type: pattern
+    condition:
+      event_type: http_request
+      path_matches:
+        - "^/admin.*"
+        - "^/debug.*"
+        - "^/api/users"
+        - "^/config"
+        - "^/.env"
+    severity: LOW
+    analyst_action: >
+      Review the source IP. If probing is persistent, block the IP. Check for successful access (status 200).
+
+  - id: RULE-003
+    name: High Request Rate (DoS/Scanner)
+    description: Detects an abnormal volume of requests from a single IP.
+    type: threshold
+    condition:
+      event_type: http_request
+    threshold: 50
+    window_seconds: 10
+    group_by: source
+    severity: MEDIUM
+    analyst_action: >
+      Investigate if the source is a known scanner. Consider rate limiting or blocking the IP.
