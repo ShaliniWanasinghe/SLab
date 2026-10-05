@@ -1,0 +1,16 @@
+# SentinelLab Vulnerable Lab Dependencies
+# ─────────────────────────────────────────────────────────────────────────────
+# This is a SEPARATE requirements file for the deliberately vulnerable
+# Flask application. It is intentionally kept minimal.
+#
+# Install with:
+#   cd vulnerable-lab
+#   pip install -r requirements.txt
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Web Framework
+flask==3.1.0
+flask-sqlalchemy==3.1.1
+
+# Password Hashing (intentionally weak for educational demo)
+werkzeug==3.1.3

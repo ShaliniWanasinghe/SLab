@@ -1,0 +1,9 @@
+This directory contains generated incident reports.
+
+Generated files are excluded from version control (.gitignore).
+Only this placeholder file is committed.
+
+Reports are generated via the API:
+  GET /api/reports/{incident_id}
+
+Or via the SentinelLab dashboard under "Reports".

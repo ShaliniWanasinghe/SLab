@@ -1,0 +1,78 @@
+# docker-compose.yml
+# SentinelLab — Optional containerized setup
+#
+# This is provided for reviewers who want a one-command startup.
+# The project is fully functional without Docker.
+#
+# Prerequisites: Docker Desktop (https://docker.com)
+#
+# Usage:
+#   docker-compose up --build
+#
+# Services:
+#   vulnerable-lab  → http://localhost:5000
+#   backend         → http://localhost:8000
+#   frontend        → http://localhost:5173
+#
+# NOTE: Docker support will be finalized in Phase 14.
+# This file is a skeleton committed in Phase 1.
+
+version: "3.9"
+
+services:
+  # ── Intentionally Vulnerable Target Application ──────────────
+  vulnerable-lab:
+    build:
+      context: ./vulnerable-lab
+      dockerfile: Dockerfile
+    container_name: sentinellab-target
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - LAB_MODE=vulnerable
+    networks:
+      - sentinellab-network
+    restart: unless-stopped
+
+  # ── Security Analysis Backend ─────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sentinellab-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/sentinellab.db:/app/sentinellab.db
+      - ./sample-data:/app/sample-data:ro
+      - ./reports:/app/reports
+    environment:
+      - DATABASE_URL=sqlite:///./sentinellab.db
+      - CORS_ORIGINS=http://localhost:5173
+    depends_on:
+      - vulnerable-lab
+    networks:
+      - sentinellab-network
+    restart: unless-stopped
+
+  # ── React Security Dashboard ──────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sentinellab-dashboard
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - sentinellab-network
+    restart: unless-stopped
+
+networks:
+  sentinellab-network:
+    driver: bridge
+    # Internal network only — no external internet access required

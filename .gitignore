@@ -1,0 +1,140 @@
+# =============================================================
+# SentinelLab .gitignore
+# =============================================================
+# NEVER commit secrets, API keys, real network captures,
+# personal data, or production credentials.
+# =============================================================
+
+# ─── Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.whl
+.installed.cfg
+MANIFEST
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env
+# (keep .env.example — that is committed)
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+
+# mypy / type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ─── Node / React ─────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+.cache/
+.parcel-cache/
+*.local
+
+# Vite
+frontend/dist/
+frontend/.vite/
+
+# ─── Database ─────────────────────────────────────────────
+# The main application database is NOT committed (it contains
+# runtime data and may accumulate sensitive lab artifacts).
+backend/sentinellab.db
+backend/*.db
+vulnerable-lab/lab_db.sqlite
+vulnerable-lab/*.db
+
+# Sample data databases (small, synthetic) ARE committed.
+# Do not add sample-data/ to this list.
+
+# ─── Security / Network captures ──────────────────────────
+# IMPORTANT: Never commit real network captures.
+# Only commit the synthetic sample files in sample-data/pcap/.
+*.pcap
+*.pcapng
+*.cap
+!sample-data/pcap/*.pcap
+!sample-data/pcap/*.pcapng
+
+# Generated reports (runtime output — not committed)
+reports/*.md
+reports/*.pdf
+reports/*.html
+!reports/.gitkeep
+
+# ─── Secrets & Environment ────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets.yaml
+secrets.json
+
+# ─── IDE / Editor ─────────────────────────────────────────
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ─── OS ───────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+!sample-data/logs/
+
+# ─── Screenshots ──────────────────────────────────────────
+# Screenshots are committed — they are part of the portfolio.
+# Do not add screenshots/ here.
+
+# ─── Nmap output (raw) ────────────────────────────────────
+# Committed sample Nmap XML lives in sample-data/
+*.nmap
+*.gnmap
+!sample-data/**/*.xml

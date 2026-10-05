@@ -1,0 +1,11 @@
+This directory contains dashboard screenshots for the README and documentation.
+
+Add screenshots here as each component is completed.
+
+Naming convention:
+  01_dashboard_overview.png
+  02_alert_table.png
+  03_incident_detail.png
+  04_pcap_analysis.png
+  05_detection_rules.png
+  06_report_generated.png
