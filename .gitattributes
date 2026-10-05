@@ -1,0 +1,27 @@
+# SentinelLab — Git Line Ending Configuration
+# Ensures consistent line endings across Windows/Linux/Mac
+
+# Default: normalize all text files to LF in the repository
+* text=auto eol=lf
+
+# Windows scripts should keep CRLF
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files — do not change line endings
+*.pcap binary
+*.pcapng binary
+*.cap binary
+*.db binary
+*.sqlite binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
