@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.93 scan initiated Mon Oct  5 15:00:00 2026 as: nmap -sV -oX localhost_scan.xml 127.0.0.1 -->
+<nmaprun scanner="nmap" args="nmap -sV -oX localhost_scan.xml 127.0.0.1" start="1791212400" startstr="Mon Oct  5 15:00:00 2026" version="7.93" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="1000" services="1-1000"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1791212400" endtime="1791212410">
+<status state="up" reason="localhost-response" reason_ttl="0"/>
+<address addr="127.0.0.1" addrtype="ipv4"/>
+<hostnames>
+<hostname name="localhost" type="user"/>
+<hostname name="localhost" type="PTR"/>
+</hostnames>
+<ports>
+<extraports state="closed" count="997">
+<extrareasons reason="conn-refused" count="997" proto="tcp" ports="1-21,23-79,81-4999,5001-7999,8001-1000"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" product="OpenSSH" version="8.9p1 Ubuntu 3ubuntu0.1" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:8.9p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="5000"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" product="Werkzeug/3.1.3 Python/3.11.0" extrainfo="Python 3.11.0" method="probed" conf="10"><cpe>cpe:/a:python:python:3.11.0</cpe></service></port>
+<port protocol="tcp" portid="8000"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" product="uvicorn" method="probed" conf="10"/></port>
+</ports>
+<times srtt="134" rttvar="25" to="100000"/>
+</host>
+<runstats><finished time="1791212410" timestr="Mon Oct  5 15:00:10 2026" summary="Nmap done at Mon Oct  5 15:00:10 2026; 1 IP address (1 host up) scanned in 10.12 seconds" elapsed="10.12" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>
