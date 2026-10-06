@@ -85,6 +85,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--rules", required=True)
     parser.add_argument("--events", required=True, help="JSON file of parsed events")
+    parser.add_argument("--api", help="Optional URL of the Alerts API to push alerts to (e.g., http://127.0.0.1:8000/api/alerts/)")
     args = parser.parse_args()
     
     engine = DetectionEngine(args.rules)
@@ -99,6 +100,32 @@ def main():
         all_alerts.extend(alerts)
         
     print(json.dumps({"alerts": all_alerts}, indent=2))
+
+    if args.api:
+        import urllib.request
+        import urllib.error
+        
+        print(f"[*] Pushing {len(all_alerts)} alerts to {args.api}...")
+        for alert in all_alerts:
+            # Drop alert_id and timestamp since the backend generates them
+            api_alert = {
+                "rule_id": alert["rule_id"],
+                "rule_name": alert["rule_name"],
+                "source": alert["source"],
+                "severity": alert["severity"],
+                "evidence": alert["evidence"],
+                "analyst_action": alert["analyst_action"]
+            }
+            
+            req = urllib.request.Request(args.api)
+            req.add_header('Content-Type', 'application/json; charset=utf-8')
+            jsondata = json.dumps(api_alert).encode('utf-8')
+            try:
+                urllib.request.urlopen(req, jsondata, timeout=5)
+            except urllib.error.URLError as e:
+                print(f"[!] Failed to push alert {alert['rule_id']}: {e}")
+        
+        print("[*] API push complete.")
 
 if __name__ == "__main__":
     main()
