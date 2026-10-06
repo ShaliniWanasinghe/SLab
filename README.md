@@ -28,7 +28,7 @@
 
 SentinelLab is a **local cybersecurity learning laboratory** that brings together several security concepts in one project. It combines network traffic capture, log analysis, rule-based detection, alert management, incident documentation, and report generation.
 
-The project was developed to gain hands-on experience with concepts commonly encountered in security monitoring and entry-level Security Operations Center (SOC) environments.
+I built this as a hands-on cybersecurity learning project to strengthen my understanding of security monitoring, network traffic analysis, detection, and incident documentation.
 
 The learning workflow is:
 
@@ -137,7 +137,8 @@ sentinellab/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sentinellab.git
+git clone https://github.com/ShaliniWanasinghe/SLab.git
+cd SLab
 cd sentinellab
 ```
 
