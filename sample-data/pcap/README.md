@@ -1,16 +1,15 @@
-Sample PCAP files in this directory are SYNTHETIC.
-They were generated in a controlled local lab environment.
-They do NOT contain real user traffic or real network data.
+# Sample Reconnaissance Data
 
-Files:
-  brute_force_sample.pcap  — Simulated brute force login attack
-  port_scan_sample.pcap    — Simulated Nmap port scan
-  normal_traffic.pcap      — Baseline normal HTTP traffic
+This directory contains synthetic Nmap XML output files representing
+reconnaissance data against the local lab environment.
 
-Use these files to:
-  1. Learn Wireshark filtering (see docs/wireshark-learning.md)
-  2. Test the PCAP analyzer: python security-analysis/pcap/analyzer.py --file <file>
-  3. Feed sample data into the detection engine for testing
+## Files
 
-PCAP files will be generated in Phase 4 of the project.
-This placeholder README is committed in Phase 1.
+### localhost_scan.xml
+Simulated output of running: `nmap -sV -oX localhost_scan.xml 127.0.0.1`
+Shows the expected lab ports (5000, 8000) and a simulated SSH port (22).
+
+## Usage
+
+Parse this data with the SentinelLab recon parser:
+  python security-analysis/recon/nmap_parser.py --file sample-data/recon/localhost_scan.xml
