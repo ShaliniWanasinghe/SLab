@@ -366,6 +366,10 @@ The following are **simulated findings used within the local vulnerable applicat
 <img width="1655" height="857" alt="Screenshot 2026-10-06 083712" src="https://github.com/user-attachments/assets/d9d64210-dc71-401a-bd11-7f67f5b460b2" />
 <br>
 <img width="1658" height="852" alt="Screenshot 2026-10-06 083728" src="https://github.com/user-attachments/assets/21bbd4a5-0f57-435e-91a3-1e984714aff3" />
+<br>
+  <img width="810" height="405" alt="Screenshot 2026-10-14 235715" src="https://github.com/user-attachments/assets/d5865f82-92cc-4e84-8d28-33ec6ffdc66a" />
+<br>
+  <img width="703" height="783" alt="Screenshot 2026-10-14 235653" src="https://github.com/user-attachments/assets/64f5bd49-ad37-46d9-b72c-9f5cd11da6af" />
 
 <br><br>
 </div>
